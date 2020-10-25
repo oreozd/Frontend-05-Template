@@ -13,17 +13,23 @@
 2. 储存匹配结果（优化拆分结果）：将上一步拆分结果进行数据组装供下一步的语法分析进行使用，token(有效字符)：number, operator
 3. 进行语法分析: 将四则运算上一步拆分的结果集，按照下面三种语法表达式进行翻译，排列组合。供下一步的解释执行
 语法产生式：
+```
 <Expression> ::=     
 <AdditiveExpression><EOF>
+```
 加法语法产生式：
+```
 <AdditiveExpression> ::= 
     <MultiplicativeExpression>
     |<AdditiveExpression><+><MultiplicativeExpression>
     |<AdditiveExpression><-><MultiplicativeExpression>
+```
 乘法语法产生式：
+```
 <MultiplicativeExpression> ::= 
     <Number>
     |<MultiplicativeExpression><*><Number>
     |<MultiplicativeExpression></><Number>
+```
 
 
