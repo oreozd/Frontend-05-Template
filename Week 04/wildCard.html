@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        function find(source, pattern){
+            let startCount = 0;
+            //查找字符串中 “*“ 的数量，确定最后一个 ”*“ 的位置
+            for(let i = 0; i < pattern.length; i++){
+                if(pattern[i] === "*"){
+                    startCount++;
+                }
+            }
+            //不存在“*”
+            if(startCount === 0){
+                for(let i = 0; i < pattern.length; i++){
+                    if(pattern[i] !== source[i] && pattern[i] !== '?'){
+                        return false; //不能匹配
+                    }
+                }
+                return;
+            }
+
+            //处理第一个 “*”之前的部分
+            let i = 0; //pattern的位置
+            let lastIndex = 0;//source下标
+
+            for(i = 0; pattern[i] !== "*"; i++){
+                if(pattern[i] !== source[i] && pattern[i] !== "?"){
+                    return false;
+                }
+            }
+
+            lastIndex = i; //第一个 “*” 之前是严格对应的关系
+
+            for(let j = 0; j < startCount - 1; j++){
+                i++;
+                let subPattern = "";
+                while(pattern[i] !== "*"){
+                    subPattern += pattern[i];
+                    i++;
+                }
+
+                let reg = new RegExp(subPattern.replace(/\?/g, "[\\s\\S]", "g"));
+                reg.lastIndex = lastIndex;
+                
+                console.log(reg.exec(source))
+                if(!reg.exec(source)){
+                    return false
+                }
+                lastIndex = reg.lastIndex;
+            }
+
+            //最后一个“*”后面的内容
+            for(let k = 0; k <= source.length - lastIndex && pattern[pattern.length - k] !== "*"; k++){
+                if(pattern[pattern.length - k] !== source[source.length - k] && pattern[pattern.length - k] !== "?"){
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script> 
+</body>
+</html>

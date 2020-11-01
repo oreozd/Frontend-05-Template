@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        function kmp(source, pattern){
+            //跳转表格
+            let table = new Array(pattern.length).fill(0);
+            {
+                let i = 1; j = 0;
+                while(i < pattern.length){
+                    if(pattern[i] === pattern[j]){
+                        ++j, ++i;
+                        table[i] = j;
+                    }else {
+                        if(j > 0){
+                            j = table[j];
+                        }else {
+                            ++i;
+                        }
+                    }
+                }
+            }
+            //匹配
+            {
+                let i = 0, j = 0;
+                while(i < source.length){
+                    if(pattern[j] === source[i]){
+                        ++i, ++j;
+                    }else {
+                        if(j > 0){
+                            j = table[j];
+                        }else {
+                            ++i;
+                        }
+                    }
+
+                    if(j === pattern.length){
+                        console.log("j", i - j)
+                        return true
+                    }
+                }
+                return false
+            }
+        }
+    </script>
+</body>
+</html>

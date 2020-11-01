@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        var strStr = function (haystack, needle){
+            if(haystack === needle)
+                return 0
+            if(needle.length === 0)
+                return 0;
+            let table = new Array(needle.length).fill(0);
+            {
+                let i = 1; j = 0;
+                while(i < needle.length){
+                    if(needle[i] === needle[j]){
+                        ++j, ++i;
+                        table[i] = j;
+                    }else {
+                        if(j > 0){
+                            j = table[j];
+                        }else {
+                            ++i;
+                        }
+                    }
+                }
+            }
+            //匹配
+            {
+                let i = 0, j = 0;
+                while(i < haystack.length){
+                    if(needle[j] === haystack[i]){
+                        ++i, ++j;
+                    }else {
+                        if(j > 0){
+                            j = table[j];
+                        }else {
+                            ++i;
+                        }
+                    }
+
+                    if(j === needle.length){
+                        return i - j
+                    }
+                }
+                return -1
+            }
+        }
+    </script>
+</body>
+</html>
