@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        let obj = {
+            a: 1, 
+            b: 2
+        }
+
+        let proxy = reactive(obj) //proxy作为obj的一个代理，其中的一些hook
+
+        function reactive(obj){
+            return new Proxy(obj, {
+                set(target, prop, val) {
+                    target[prop] = val
+                }, 
+                get(target, prop) {
+                    return target[prop]
+                }
+            })
+        }
+    </script>
+</body>
+</html>

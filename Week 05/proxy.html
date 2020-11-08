@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        // let obj = {
+        //     a: 1,
+        //     b: 2
+        // }
+
+        var object = { 
+            proxy: new Proxy(target, handler),
+            a: 1,
+            b: 2
+        };
+
+        var proxy = new Proxy(obj, {
+            get: function(target, propKey) {
+
+                console.log("target, propKey", target, propKey)
+                if(!(propKey in obj)){
+                    return 35;
+                }else {
+                    return target[propKey]
+                }
+            },
+
+            set: function(target, propKey, val){
+                console.log("target, propKey, val", target, propKey, val)
+                if(propKey === 'a'){
+                    target[propKey] = val
+                }
+            },
+
+            has: function() {
+
+            }
+        });
+
+
+        console.log("proxy.a", proxy.a)
+        console.log("proxy.b", proxy.b)
+        console.log("proxy.c", proxy.c)
+       
+        proxy.a = 2
+        console.log("proxy.a", proxy.a)
+        proxy.b = 'hah'
+        console.log("proxy.b", proxy.b)
+    </script>
+</body>
+</html>

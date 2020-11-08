@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        let callbacks = new Map();
+        let usedReactivities = [];
+
+        let obj = {
+            a: 1, 
+            b: 2
+        }
+
+        let proxy = reactive(obj) //proxy作为obj的一个代理，其中的一些hook
+
+        effect(() => {
+            console.log(proxy.a)
+        })
+
+        function effect(callback) {
+            //callbacks.push(callback)
+            usedReactivities = []; 
+            callback(); //触发
+            console.log(usedReactivities)
+
+            for(let reactivity of usedReactivities){
+                if(!callbacks.has(reactivity[0])){
+                    callbacks.set(reactivity[0], new Map());
+                }
+                if(!callbacks.get(reactivity[0]).has(reactivity[1])){
+                    callbacks.get(reactivity[0]).set(reactivity[1], []);
+                }
+                callbacks.get(reactivity[0]).get(reactivity[1]).push(callback);
+            }
+        }
+
+        function reactive(obj){
+            return new Proxy(obj, {
+                set(target, prop, val) {
+                    target[prop] = val
+                    // for(let callback of callbacks){
+                    //     callback();
+                    // }
+                    if(callbacks.get(target)){
+                        if(callbacks.get(target).get(prop)){
+                            for(let callback of callbacks.get(target).get(prop)){
+                                callback();
+                            }
+                        }
+                    }
+                    return obj[prop]
+                }, 
+                get(target, prop) {
+                    usedReactivities.push([target, prop])
+                    return target[prop]
+                }
+            })
+        }
+    </script>
+</body>
+</html>

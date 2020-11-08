@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .color{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    R:<input type="range" id="r" min="0" max="255" />
+    G:<input type="range" id="g" min="0" max="255" />
+    B:<input type="range" id="b" min="0" max="255" />
+    <div id="color" class="color"></div>
+    <script>
+        //let red = 0, green = 0, blue = 0;
+
+        //let callbacks = []; //需使用一个二元组
+        let callbacks = new Map(); //需使用一个二元组
+        let useReactives = [];
+        let reactives = new Map();  //缓存
+
+        let color = {
+            red: 0,
+            green: 0, 
+            blue: 0
+        }
+
+        let proxy = reactive(color); //proxy作为obj的一个代理，其中的一些hook
+        
+        effect(() => {
+            document.getElementById("r").value = proxy.red;
+        })
+
+        effect(() => {
+            document.getElementById("g").value = proxy.green;
+        })
+
+        effect(() => {
+            document.getElementById("b").value = proxy.blue;
+        })
+
+        document.getElementById("r").addEventListener('input', (event) => {
+            //保存值
+            proxy.red = event.target.value;
+        })
+        document.getElementById("g").addEventListener('input', (event) => {
+            //保存值
+            proxy.green = event.target.value;
+        })
+        document.getElementById("b").addEventListener('input', (event) => {
+            //保存值
+            proxy.blue = event.target.value;
+        })
+
+        effect(() => {
+            document.getElementById("color").style.backgroundColor = `rgb(${proxy.red}, ${proxy.green}, ${proxy.blue})`
+        })
+
+        function effect(callback) {
+            useReactives = [];
+            callback();
+            console.log(useReactives)
+            for(let usedReactivity of useReactives){
+                //避免多次注册
+                if(!callbacks.has(usedReactivity[0])){
+                    callbacks.set(usedReactivity[0], new Map());
+                }
+
+                if(!callbacks.get(usedReactivity[0]).has(usedReactivity[1])){
+                    callbacks.get(usedReactivity[0]).set(usedReactivity[1], []);
+                }
+                callbacks.get(usedReactivity[0]).get(usedReactivity[1]).push(callback);
+            }
+        }
+
+        function reactive(obj){
+            if(reactives.has(obj)){
+                return reactives.get(obj)
+            }
+
+            let proxy = new Proxy(obj, {
+                set(target, prop, val) {
+                    target[prop] = val
+                    console.log("callbacks", callbacks)
+                    if(callbacks.get(target)){
+                        if(callbacks.get(target).get(prop)){
+                            console.log("callbacks.get(target).get(prop)", callbacks.get(target).get(prop))
+                            for(let callback of callbacks.get(target).get(prop)){
+                                console.log("callback", callback)
+                                callback(); //执行回调函数
+                            }
+                        } 
+                    }
+                }, 
+                get(target, prop) {
+                    useReactives.push([target, prop])
+                    if(typeof target[prop] === 'object'){
+                        return reactive(target[prop]); //新生成的proxy，跟上一步的不是同一个
+                    }
+                    return target[prop];
+                }
+            })
+            reactives.set(obj, proxy) //存入缓存
+
+            return proxy
+        }
+    </script>
+</body>
+</html>
