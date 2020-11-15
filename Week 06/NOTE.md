@@ -40,6 +40,7 @@ IEEE754 double float组成部分
     `ab${
     }abc${
     }abc`
+    ![contents](/images/string.png)
 
 4. null和undefined:
     null是关键字，undefeated是一个全局的变量。
