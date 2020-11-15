@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        function foo(road, speed, start, end) {
+            let output = 0
+            let point = 0 //需要关注点
+            for(let i = 0; i < road; i++){ //遍历整个路径
+                point += speed
+                if(point < start || (point <= road && point > end)){
+                    output++
+                }
+                if(point >= road + speed)
+                    break;
+            }
+            return output
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+<script>
+class Dog {
+    bite(part){
+        return part
+    }
+}
+
+class Human {
+    hurt(damage) {
+        console.log("我的" + damage + "  is hurt")
+    }
+}
+
+let dog = new Dog()
+let part = dog.bite('leg')
+let human = new Human()
+let hurt = human.hurt(part)
+</script>
+<!-- //行为是指改变对象状态，所以行为的拥有者应该是状态改变的一方 -->

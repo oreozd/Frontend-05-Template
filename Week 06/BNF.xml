@@ -1,0 +1,18 @@
+
+
+<Expression> ::= 
+    <AdditiveExpression><EOF>
+<BracketExpression> ::=
+    <Number> |
+    (<AdditiveExpression>) |
+<AdditiveExpression> ::= 
+    <MultiplicativeExpression>
+    |<AdditiveExpression><+><MultiplicativeExpression>
+    |<AdditiveExpression><-><MultiplicativeExpression>
+<MultiplicativeExpression> ::=
+    <BracketExpression>|
+    <MultiplicativeExpression><*><BracketExpression>|
+    <MultiplicativeExpression></><BracketExpression>|
+
+
+

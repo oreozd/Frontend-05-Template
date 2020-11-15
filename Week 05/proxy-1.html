@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="username" id="input" />
+    <span id="text"></span>
+    <script>
+        let obj = {a: 1}
+        document.getElementById("input").value = obj.a
+        document.getElementById("input").addEventListener("input", (event) => {
+            proxy.a = event.target.value
+        })
+        var proxy = new Proxy(obj, {
+            set(target, prop, val){
+                console.log("target, prop, val", target, prop, val)
+                target[prop] = val
+                document.getElementById("text").innerText = val
+            },
+            get(target, prop){
+                console.log("target, prop", target, prop)
+                return target[prop]
+            }
+        })
+        console.log("obj", obj.a)
+    </script>
+</body>
+</html>
