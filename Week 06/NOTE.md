@@ -10,7 +10,7 @@
     
     形式语言：大多数计算机语言（严谨严格，有形式化定义）
 
-    ![contents](/images/语言分类.png)
+    ![js语言分类](/images/语言分类.png)
 2. 产生式（BNF）:
     - 尖括号里的名称表示语法结构名
     - 语法结构分为基础结构和需要其他结构定义的符合结构
@@ -19,9 +19,9 @@
     - *表示重复多次
     - ｜表示或
     - +表示至少出现一次
-    ![contents](/images/语言设计方式.png)
+    ![语言设计方式](/images/语言设计方式.png)
 
-    ![contents](/images/编程语言性质.png)
+    ![编程语言性质](/images/编程语言性质.png)
 2. number类型
 
 浮点数：数字拆为指数和有效位数，有效位数决定精度，指数表示范围,会有一个最大整数表示范围。
@@ -40,7 +40,7 @@ IEEE754 double float组成部分
     `ab${
     }abc${
     }abc`
-    ![contents](/images/string.png)
+    ![string](/images/string.png)
 
 4. null和undefined:
     null是关键字，undefeated是一个全局的变量。
