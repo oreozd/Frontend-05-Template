@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function NumberToString(num) {
+            let str = + num;
+            //number
+            return str
+        }
+
+        function StringToNumber(str) {
+            let num = null;
+            let arr = str.trim().split('');//拆出来
+            let sign = arr[0] === '-' ? -1 : 1;
+            if(sign === -1){
+                arr.shift() //去掉第一位
+                console.log("arr", arr)
+            } 
+            if(arr[0] === "0"){
+                if(arr[1] === 'x' || arr[1] === 'X'){
+                    //十六进制数
+                    getNumber(arr, sign, 16)
+                    console.log("getNumber(arr, sign, 16)", getNumber(arr, sign, 16))
+                }else if(arr[1] === 'o' || arr[1] === 'O'){
+                    //八进制数
+                    getNumber(arr, sign, 8)
+                }else if(arr[1] === 'b' || arr[1] === 'B'){
+                    //二进制数
+                    getNumber(arr, sign, 2)
+                }
+            }else {
+                //十进制数字
+                getNumber(arr, sign, 10)
+            }
+            
+            
+            //读取字符串
+            //判断正负
+            //转换为数字
+            //再转换相应的进制
+            return num
+        }
+
+        function getNumber(arr, sign, scale) {
+            let numArr = arr
+            if(scale === 16 || scale === 8 || scale === 2){
+                numArr = arr.slice(2)
+            }
+            return sign * numArr.reduce((total, cur)=>(
+                ///console.log("total, cur", total, cur)
+                total * scale + cur
+            ))
+        }
+
+        // let StringToNumber = (str)=>{
+        //     let arr = str.trim().split('')
+        //     let sign = arr[0] === '-' ? -1 : 1
+        //     if (sign === -1 || str[0] === '+') {
+        //         arr.shift()
+        //     }
+        //     return sign * arr.reduce((total, cur)=>(
+        //         total * 10 + (cur >= '0' && cur <= '9' ? (cur - '0') : NaN)
+        //     ))
+        // }
+
+    </script>
+
+</body>
+</html>
