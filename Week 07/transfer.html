@@ -13,48 +13,160 @@
             return str
         }
 
-        function StringToNumber(str) {
+        function StringToNumber(str, scale) {
             let num = null;
+            let canTransfer = false;
             let arr = str.trim().split('');//拆出来
             let sign = arr[0] === '-' ? -1 : 1;
+            let strScale = null;
+            let base = ''
             if(sign === -1){
                 arr.shift() //去掉第一位
                 console.log("arr", arr)
             } 
-            if(arr[0] === "0"){
-                if(arr[1] === 'x' || arr[1] === 'X'){
-                    //十六进制数
-                    getNumber(arr, sign, 16)
-                    console.log("getNumber(arr, sign, 16)", getNumber(arr, sign, 16))
-                }else if(arr[1] === 'o' || arr[1] === 'O'){
-                    //八进制数
-                    getNumber(arr, sign, 8)
-                }else if(arr[1] === 'b' || arr[1] === 'B'){
-                    //二进制数
-                    getNumber(arr, sign, 2)
+            if(arr[0] === '0'){
+                //16
+                if(['x', 'X'].includes(arr[1])){
+                    arr.slice(2);
+                    strScale = 16;
+                    base = '0x';
                 }
-            }else {
-                //十进制数字
-                getNumber(arr, sign, 10)
+                if(['b', 'B'].includes(arr[1])){
+                    arr.slice(2);
+                    strScale = 2;
+                    base = '0b';
+                }
+                if(['o', 'O'].includes(arr[1])){
+                    arr.slice(2);
+                    strScale = 8;
+                    base = '0o';
+                }
             }
-            
-            
+            if(canTransfer(arr, scale)){
+                console.log("非法输入，无法完成转换")
+            }else{
+                //字符串的进制与需要转换的进制一致，直接使用转换结果+前缀
+                if(strScale === scale){
+                    num = base + Number(arr.join(''));
+                }else {
+                    //调用深层转换逻辑
+                    num = getNumber(arr, sign, scale, strScale, base)
+                }
+            }
             //读取字符串
             //判断正负
-            //转换为数字
             //再转换相应的进制
             return num
         }
 
-        function getNumber(arr, sign, scale) {
-            let numArr = arr
-            if(scale === 16 || scale === 8 || scale === 2){
-                numArr = arr.slice(2)
+        function canTransfer(arr, scale) {
+            return arr.some(ele => {
+                Number(ele) > scale - 1
+            })
+        }
+
+        function getNumber(arr, sign, scale, strScale, base) {
+            let result = null;
+            let num = Number(arr.join()); //已经将数字部分进行了就地转换
+            let binaryNum = null; //将所有的数据都转换为二进
+            let binaryArr10 = [];
+            let binaryArr8 = [];
+            let binaryArr16 = [];
+            
+            //全部转换为二进制
+            if(strScale === 10){
+                let binaryArr = [];
+                while(num % 2 === 0){
+                    num /= 2;
+                    binaryArr10.push(num % 2);
+                }
+                //binaryNum = Number(binaryNum.join(''));
             }
-            return sign * numArr.reduce((total, cur)=>(
-                ///console.log("total, cur", total, cur)
-                total * scale + cur
-            ))
+            if(strScale === 8){
+                //一个数字形成三位二进制，不够需要补0
+                let binaryArr = [];
+                for(let i = 0; i < arr.length; i++){
+                    let num = Number(arr[i]);
+                    let arr = [];
+                    while(num % 2 === 0){
+                        num /= 2;
+                        arr.push(num % 2);
+                    }
+                    if(arr.length < 3){
+                        for(let i = 0; i < 3 - arr.length; i++){
+                            arr.unshift(0)
+                        }
+                    }
+                    binaryArr8.concat(arr); //整个二进制字符组成的数组
+                    //arr为二进制段
+                }
+
+            }
+            if(strScale === 16){
+                //一个数字形成四位二进制，不够需要补0
+                //一个数字形成三位二进制，不够需要补0
+                let binaryArr = [];
+                for(let i = 0; i < arr.length; i++){
+                    let num = Number(arr[i]);
+                    let arr = [];
+                    while(num % 2 === 0){
+                        num /= 2;
+                        arr.push(num % 2);
+                    }
+                    if(arr.length < 4){
+                        for(let i = 0; i < 4 - arr.length; i++){
+                            arr.unshift(0)
+                        }
+                    }
+                    binaryArr16.concat(arr); //整个二进制字符组成的数组
+                    //arr为二进制段
+                }
+            }
+            //全部转化为二进制之后，需要进行再度转换
+            switch(scale){
+                case 8: //三位一组进行计算
+                {
+                    let resultArr = [];
+                    let num = null;
+                    let str = '';
+                    for(var i=0,len=data.length;i<len;i+=3){
+                        resultArr.push(data.slice(i,i+3));
+                    }
+                    resultArr.forEach((item, index) => {
+                        item.forEach((ele, index) => {
+                            num = ele + Math.pow(2, index - 1)
+                        })
+                        str += num;
+                    })
+                    result = Number(str);
+                }
+                
+                case 16: //四位一组进行计算
+                {
+                    let resultArr = [];
+                    let num = null;
+                    let str = '';
+                    for(var i=0,len=data.length;i<len;i+=4){
+                        resultArr.push(data.slice(i,i+4));
+                    }
+                    resultArr.forEach((item, index) => {
+                        item.forEach((ele, index) => {
+                            num = ele + Math.pow(2, index - 1)
+                        })
+                        str += num;
+                    })
+                    result = Number(str);
+                }
+                case 10: //经典叠加算法
+                {
+                    let num = null;
+                    binaryArr10.forEach((item, index) => {
+                        num = item + Math.pow(2, index - 1)
+                    })
+                    result = num;
+                }
+            }
+            return result;
         }
 
         // let StringToNumber = (str)=>{
