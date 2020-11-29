@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function findAbcdef(str) {
+            let arr = str.split("");
+            for(let i = 0; i < arr.length; i++){
+                if(arr[i] === 'a' && arr[i + 1] === 'b' && arr[i + 2] === 'c' && arr[i + 3] === 'd' && arr[i + 4] === 'e' && arr[i + 5] === 'f'){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        console.log(findAbcdef("aassdddababcdf"))
+    </script>
+
+    <script>
+        function kmp(source, pattern){
+            //跳转表格
+            let table = new Array(pattern.length).fill(0);
+            {
+                let i = 1; j = 0;
+                while(i < pattern.length){
+                    if(pattern[i] === pattern[j]){
+                        ++j, ++i;
+                        table[i] = j;
+                    }else {
+                        if(j > 0){
+                            j = table[j];
+                        }else {
+                            ++i;
+                        }
+                    }
+                }
+            }
+            //匹配
+            {
+                let i = 0, j = 0;
+                while(i < source.length){
+                    if(pattern[j] === source[i]){
+                        ++i, ++j;
+                    }else {
+                        if(j > 0){
+                            j = table[j];
+                        }else {
+                            ++i;
+                        }
+                    }
+                    if(j === pattern.length){
+                        return true
+                    }
+                }
+                return false
+            }
+        }
+        console.log(kmp('aassdddababcdef', 'abcdef'))
+    </script>
+</body>
+</html>
