@@ -1,4 +1,6 @@
-const css = require('css')
+const css = require('css');
+const layout = require('./layout.js');
+
 let currentToken = null;
 let currentAttribute = null;
 let currentTextNode = null;
@@ -164,6 +166,7 @@ function emit(token) {
             if(top.tagName == 'style'){
                 addCSSRules(top.children[0].content); //子元素文本节点的内容作为样式文本
             }
+            layout(top);
             stack.pop();
         }
         currentTextNode = null;

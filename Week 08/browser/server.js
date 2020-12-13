@@ -11,7 +11,7 @@ http.createServer((req, res) => {
         body = (Buffer.concat([ Buffer.from(body.toString()) ])).toString();
         console.log("body", body); //
         res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end('hello world\n');
+        res.end('hello world');
     });
 }).listen(8088);
 
