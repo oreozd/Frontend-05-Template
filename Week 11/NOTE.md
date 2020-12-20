@@ -121,6 +121,7 @@ N一般会选择一个足够大的值，来避免计算结果和实际结果出�
 
 ##### 思考题
 Q: 为什么 first-letter 可以设置 float 之类的，而 first-line 不行呢？ 
+
 A: first-line表示第一行，类似float，position:absolute这些属性会使元素脱离文档流，这个时候，就没有所谓的第一行概念，因为这个第一行是一个相对的概念。
 
         
