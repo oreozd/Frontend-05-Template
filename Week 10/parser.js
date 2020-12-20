@@ -50,24 +50,24 @@ function compare(sp1, sp2){
     return sp1[3] - sp2[3];
 }
 
-function match(elemnet, selector){
-    //!elemnet.attributes 判断是否为文本节点
-    if(!selector || !elemnet.attributes){
+function match(element, selector){
+    //!element.attributes 判断是否为文本节点
+    if(!selector || !element.attributes){
         return false;
     }
 
     if(selector.charAt(0) == '#'){ //idx选择器
-        var attribute = elemnet.attributes.filter(item => item.name === 'id');
+        var attribute = element.attributes.filter(item => item.name === 'id');
         if(attribute && attribute.value === selector.replace('#', '')){
             return true;
         }
     }else if(selector.charAt(0) == '.'){ //类选择器
-        var attribute = elemnet.attributes.filter(item => item.name === 'class');
+        var attribute = element.attributes.filter(item => item.name === 'class');
         if(attribute && attribute.value === selector.replace('.', '')){
             return true;
         }
     }else { //元素选择器
-        if(elemnet.tagName === selector){
+        if(element.tagName === selector){
             return true;
         }
     }
@@ -75,27 +75,27 @@ function match(elemnet, selector){
 }
 
 //尽量保证选择器在starTag的步骤
-function computeCSS(elemnet) {
+function computeCSS(element) {
     console.log(rules);
-    console.log("compute css for html", elemnet);
+    console.log("compute css for html", element);
     //获取父元素
     var elements = stack.slice().reverse(); //逐级向外匹配
     //代码写到11节
-    if(!elemnet.computedStyle){
-        elemnet.computedStyle = {};
+    if(!element.computedStyle){
+        element.computedStyle = {};
     }
 
     //重点看一下
     for(let rule of rules){
         var selectorParts = rule.selectors[0].split(" ").reverse(); //以空格拆分复杂选择器
-        if(!match(elemnet, selectorParts[0])){
+        if(!match(element, selectorParts[0])){
             continue;
         }
         let matched = false;
 
         var j = 1;
-        for(let i = 0; i < elemnet.length; i++){
-            if(match(elemnet[i], selectorParts[j])){
+        for(let i = 0; i < element.length; i++){
+            if(match(element[i], selectorParts[j])){
                 j++;
             }
         }
@@ -103,9 +103,9 @@ function computeCSS(elemnet) {
             matched = true;
         }
         if(matched){
-            console.log("element", elemnet, "matched rule", rule);
+            console.log("element", element, "matched rule", rule);
             var sp = specificity(rule.selectors[0]);
-            var computedStyle = elemnet.computedStyle;
+            var computedStyle = element.computedStyle;
             for(let declaration of rule.declarations){
                 if(!computedStyle[declaration.property]){
                     computedStyle[declaration.property] = {};
@@ -120,7 +120,7 @@ function computeCSS(elemnet) {
                 }
                 //computedStyle[declaration.property].value = declaration.value;
             }
-            console.log("elemnet.computedStyle", elemnet.computedStyle)
+            console.log("element.computedStyle", element.computedStyle)
         }
     }
 }
@@ -132,29 +132,29 @@ function emit(token) {
     let top = stack[stack.length - 1];
 
     if(token.type == 'startTag'){
-        let elemnet = {
-            type: 'elemnet',
+        let element = {
+            type: 'element',
             children: [],
             attributes: []
         };
 
-        elemnet.tagName = token.tagName;
+        element.tagName = token.tagName;
 
         for(let p of token){
             if(p != 'type' && p != 'tagName'){
-                elemnet.attributes.push({
+                element.attributes.push({
                     name: p,
                     value: token[p]
                 })
             }
         }
-        computeCSS(elemnet);
-        top.children.push(elemnet);
+        computeCSS(element);
+        top.children.push(element);
 
-        //elemnet.parent = top;
+        //element.parent = top;
 
         if(!token.isSelfClosing){
-            stack.push(elemnet);
+            stack.push(element);
         }
 
         currentTextNode = null;
