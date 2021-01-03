@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #a{
+            height: 200px;
+            background-color: red;
+        }
+        #b {
+            height: 100px;
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+    <div id="a">
+        <div id="b">b</div>
+    </div>
+
+    <script>
+        let a = document.getElementById("a");
+        let b = document.getElementById("b");
+    </script>
+</body>
+</html>
+
+<!-- 
+    一个事件都会有捕获阶段和冒泡阶段，即使不做监听也是会存在，平时所说的冒泡监听指的是指监听发生在哪个节点
+    也就是事件处理函数触发的时机
+    捕获：从根节点一级一级往下计算直到找到目标节点
+    冒泡：从目标节点出发一级一级往下查找，直到找到根节点。
+ -->

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="tar">
+        <span>a</span>
+        <p>b</p>
+        <a>c</a>
+        <div>d</div>
+    </div>
+
+    <script>
+        let element = document.getElementById("tar");
+
+        function reverseChildren(element){
+            let children = Array.prototype.slice.call(element.childNodes); //将living Collection 转化为数组
+            //清空
+            for(let child of children){
+                element.removeChildren(child); 
+            }
+            element.innerHtml = ""; //清空element子元素
+            children.reverse(); //逆序
+            //依次加入
+            for(let child of children){
+                element.appendChild(child);
+            }
+        }
+
+        reverseChildren(element);
+    </script>
+
+    <script>
+        let element = document.getElementById("tar")
+
+        function reverseChildren(element) {
+            //living collection
+            let len = element.childNodes.length; //从后往前循环
+            while(len-- > 0){
+                element.appendChild(element.childNodes[len]);
+            }
+        }
+        reverseChildren(element);
+    </script>
+
+    <script>
+        let element = document.getElementById("tar");
+
+        function reverseChildren(element){
+            let range = new Range();
+            range.selectNodeContents(element); //选择所有的子元素
+            let fragment = range.extractContents(); //已经脱离开真实dom结构，后续操作并不会触发重排
+            let len = fragment.childNodes.length;
+            while(len-- > 0){
+                fragment.appendChild(fragment.childNodes[len]);
+            }
+            element.appendChild(fragment);
+        }
+        reverseChildren(element);
+    </script>
+</body>
+</html>

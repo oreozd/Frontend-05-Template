@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .x::before{
+            content: '额外额外额外额外额外额外额外';
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 100px;height: 400px;overflow: scroll;">
+        文字<span class="x" style="background-color: lightyellow;">文字文字文字文字文字文字文字文字</span>
+    </div>
+
+    <script>
+        var x = document.getElementsByClassName("x")[0];
+    </script>
+</body>
+</html>
