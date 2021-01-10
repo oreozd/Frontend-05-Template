@@ -28,5 +28,4 @@ mvc, mvvm前端的，页面和资源的关系
             - createElement(type, attributes, ...children)
         - parser
 
-- 轮播图
     
