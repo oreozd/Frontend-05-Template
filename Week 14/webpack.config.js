@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./main01.js",
+    entry: "./main03.js",
     module: {
         rules: [
             {
