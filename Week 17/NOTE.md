@@ -1,6 +1,4 @@
 学习笔记
-
-覆盖整个过程的工具
 #### 工具链
 在项目创建，开发，部署，发布，维护过程中所使用到的一系列工具的总和
 https://juejin.cn/post/6844904086874095623
@@ -16,5 +14,5 @@ https://juejin.cn/post/6844904086874095623
     - 1.条件匹配：通过test，include，exclude三个配置项来命中
     - 2.应用规则：对选中的文件通过use配置项来应用loader, 可以只应用一个loader或者按照从后往前的顺序应用一组loader,可以分别为loader传入参数。
     - 3.重置顺序：一组loader执行顺序默认从右往左，可以使用enforce 选项改变执行顺序。
-- webpack plugin: 作用是一个声明周期函数，在webpack打包过程的特定时期执行对应的操作
+- webpack plugin: 作用是一个生命周期钩子函数，在webpack打包过程的特定时期执行对应的操作
 - babel: 把高版本的Ecmascript编译为低版本的
