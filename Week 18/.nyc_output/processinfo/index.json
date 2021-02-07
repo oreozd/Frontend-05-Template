@@ -1,0 +1,1 @@
+{"processes":{"467281ab-95b7-4f35-9b5d-c7457ffac1ce":{"parent":"b6bbca75-34b6-4eb4-bc94-10a2810a4027","children":[]},"b6bbca75-34b6-4eb4-bc94-10a2810a4027":{"parent":null,"children":["467281ab-95b7-4f35-9b5d-c7457ffac1ce"]}},"files":{"/Users/dede/Desktop/Frontend-05-Template/Week 18/src/parser.js":["467281ab-95b7-4f35-9b5d-c7457ffac1ce"]},"externalIds":{}}

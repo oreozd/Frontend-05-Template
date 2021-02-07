@@ -1,0 +1,20 @@
+{
+    "configurations": [
+    {
+        "name": "Launch Program",
+        "program": "${workspaceFolder}/node_modules/.bin/mocha",
+        "request": "launch",
+        "skipFiles": [
+            "<node_internals>/**"
+        ],
+        "runtimeArgs": [
+            "--require", "@babel/register"
+        ],
+        "sourceMaps": true,
+        "args": [
+
+        ],
+        "type": "pwa-node"
+    }
+    ]
+}
