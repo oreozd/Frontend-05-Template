@@ -1,0 +1,17 @@
+{
+  "name": "publish-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "scp -r -P 8022 ./* oreo@127.0.0.1:/home/oreo/publish-server",
+    "start": "node ./server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "unzip": "^0.1.11",
+    "unzipper": "^0.10.11"
+  }
+}
